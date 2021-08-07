@@ -65,7 +65,7 @@ slack.chat.post_message('#general', 'Hello fellow slackers!')
     * requests를 활용하여 slacker의 기능을 하는 아래의 코드를 그대로 복사 + 붙여넣기 합니다.
     * 마지막 줄의 post_message 함수의 인자를 변경해줍니다. 1번째 인자로 여러분의 bot 토큰을, 2번째 인자로 채널명을, 3번째 인자로 보내고자 하는 메시지를 작성합니다.
     * 코드를 실행하고 '<Response [200]>' 메시지가 표시되면 slack에 성공적으로 전송됩니다.
-    ```
+```
     # requests 라이브러리 설치
       $ pip install requests
     # slacker 기능의 코드
@@ -82,6 +82,33 @@ slack.chat.post_message('#general', 'Hello fellow slackers!')
      
     post_message(myToken,"#stock","jocoding")
 ```
+
+# 3. 크레온 API 와 Slack 연동하기
+
+1. 크레온 API 자료실
+    * '주식 현재가 조회' 항목의 코드를 복사하기
+    * slacker 파일 코드 위에 붙여넣기
+
+2. 크레온 API 사용 전 확인 사항
+    * VSC 를 관리자 권한으로 필수 실행
+    * 크레온 Plus 로그인 하기
+    * 매도 호가만 남기고 주석 처리를 해준다.
+    * 슬랙 메시지 함수 인자로 현재가 객체 'offer'를 입력해준다.
+    
+    
+# 4. 자동 매매 코드 구현
+1. 코드 구현을 위한 fork
+    * 파이썬 증권 데이터 분석 github 들어가기
+    * 8단원 Volatility Breakout 폴더로 들어가기
+    * EtfAlgoTarder.py 들어가기
+    * 코드 중 필요 없는 라이브러리 지우기 (아래 4줄 라이브러리)
+    
+2. 코드 정리
+    * slacker setting 부분에서 본인 OAuth Token으로 변경해준다.
+    * slacker setting 부분에서 본인 #channel 명으로 변경해준다.
+    
+
+
 
 
     
