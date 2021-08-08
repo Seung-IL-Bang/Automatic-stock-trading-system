@@ -21,11 +21,11 @@ if rqStatus != 0:
  
 # 현재가 정보 조회
 offer = objStockMst.GetHeaderValue(16)  #매도호가
+cprice= objStockMst.GetHeaderValue(11) # 종가
 """
 code = objStockMst.GetHeaderValue(0)  #종목코드
 name= objStockMst.GetHeaderValue(1)  # 종목명
 time= objStockMst.GetHeaderValue(4)  # 시간
-cprice= objStockMst.GetHeaderValue(11) # 종가
 diff= objStockMst.GetHeaderValue(12)  # 대비
 open= objStockMst.GetHeaderValue(13)  # 시가
 high= objStockMst.GetHeaderValue(14)  # 고가
@@ -72,11 +72,18 @@ print("예상체결가 대비", exDiff)
 print("예상체결수량", exVol)
 
 
-from slacker import Slacker
+import requests
+ 
+def post_message(token, channel, text):
+    response = requests.post("https://slack.com/api/chat.postMessage",
+        headers={"Authorization": "Bearer "+token},
+        data={"channel": channel,"text": text}
+    )
+    print(response)
+ 
+myToken = "xoxb-2342626884407-2369989189297-Re21kmP8HOyMLI7d68oCMEvs"
+ 
+post_message(myToken,"#stockbot","삼성전자 현재가" + str(offer) + " 종가" + str(cprice))
 
-slack = Slacker('<your-slack-api-token-goes-here>')
-
-# Send a message to #general channel
-slack.chat.post_message('#general', '삼선전자 현재가 : ' + str(offer))
 
  
