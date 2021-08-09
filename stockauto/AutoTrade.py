@@ -2,10 +2,10 @@ import os, sys, ctypes
 import win32com.client
 import pandas as pd
 from datetime import datetime
-from slacker import Slacker
 import time, calendar
 """
 필요 없는 라이브러리
+from slacker import Slacker
 from bs4 import BeautifulSoup
 from urllib.request import urlopen
 from selenium import webdriver
@@ -13,12 +13,20 @@ from selenium.webdriver.chrome.options import Options
 """
 
 # slacker settings
-slack = Slacker('본인 OAuth Token')
+import requests
+def post_message(token, channel, text):
+    response = requests.post("https://slack.com/api/chat.postMessage",
+        headers={"Authorization": "Bearer "+token},
+        data={"channel": channel,"text": text}
+    )
+ 
+myToken = "xoxb-2342626884407-2369989189297-Re21kmP8HOyMLI7d68oCMEvs"
+
 def dbgout(message):
     """인자로 받은 문자열을 파이썬 셸과 슬랙으로 동시에 출력한다."""
     print(datetime.now().strftime('[%m/%d %H:%M:%S]'), message)
     strbuf = datetime.now().strftime('[%m/%d %H:%M:%S] ') + message
-    slack.chat.post_message('#본인 워크스페이스 사용 채널명', strbuf)
+    post_message(myToken,"#stockbot", strbuf)
 
 def printlog(message, *args):
     """인자로 받은 문자열을 파이썬 셸에 출력한다."""
@@ -251,11 +259,10 @@ def sell_all():
 
 if __name__ == '__main__': 
     try:
-        symbol_list = ['A122630', 'A252670', 'A233740', 'A250780', 'A225130',
-             'A280940', 'A261220', 'A217770', 'A295000', 'A176950']
+        symbol_list = ['A005930', 'A035720']
         bought_list = []     # 매수 완료된 종목 리스트
-        target_buy_count = 5 # 매수할 종목 수
-        buy_percent = 0.19   
+        target_buy_count = 2 # 매수할 종목 수
+        buy_percent = 0.5  # 전체 자금에서 각각의 종목에 할당되는 퍼센트
         printlog('check_creon_system() :', check_creon_system())  # 크레온 접속 점검
         stocks = get_stock_balance('ALL')      # 보유한 모든 종목 조회
         total_cash = int(get_current_cash())   # 100% 증거금 주문 가능 금액 조회
@@ -269,8 +276,8 @@ if __name__ == '__main__':
         while True:
             t_now = datetime.now()
             t_9 = t_now.replace(hour=9, minute=0, second=0, microsecond=0)
-            t_start = t_now.replace(hour=9, minute=5, second=0, microsecond=0)
-            t_sell = t_now.replace(hour=15, minute=15, second=0, microsecond=0)
+            t_start = t_now.replace(hour=9, minute=0, second=0, microsecond=0)
+            t_sell = t_now.replace(hour=15, minute=10, second=0, microsecond=0)
             t_exit = t_now.replace(hour=15, minute=20, second=0,microsecond=0)
             today = datetime.today().weekday()
             if today == 5 or today == 6:  # 토요일이나 일요일이면 자동 종료
